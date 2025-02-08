@@ -1,0 +1,67 @@
+Event-Driven Programming Project Overview:
+Weight: 60%
+Due:
+
+Part 1: Week 6 (Monday, 11:55 PM)
+Part 2: Week 11 (Sunday, 11:55 PM)
+Key Details:
+Part 1 – Practical Component 1 (30% of Final Mark)
+Group-based project: Max of 2 students per group.
+Goal: Develop a TCP-based client-server application with the Model-View-Controller (MVC) architecture.
+Client: A GUI application that alternates between sending and receiving messages.
+Server: A console application that handles requests and responses.
+Functional Requirements:
+Client: Sends messages (like scheduling lectures) to the server via GUI controls.
+Server: Processes messages (e.g., add/remove lectures) and replies with relevant information.
+STOP button: Ends communication between client and server.
+Exception Handling: Implement IncorrectActionException for incorrect actions and display error messages to the client.
+Part 2 – Practical Component 2 (30% of Final Mark)
+Extension of Part 1: Builds on the work from Part 1.
+Submission: Submit a video presentation covering all criteria by Week 11.
+No late submissions.
+Project Details:
+Client Application:
+
+Uses GUI to request actions (e.g., Add a Lecture, Remove a Lecture, Display Schedule).
+Communicates with the server to schedule, remove, or display lectures for a course.
+Server Application:
+
+Processes the client’s requests (Add/Remove Lecture, Display Schedule).
+Manages a memory-based data collection (e.g., ArrayList, HashMap) to store and manage lecture schedules.
+Operations:
+
+Add a Lecture:
+
+Client sends lecture info (date, time, room, module) to the server. Server checks for conflicts (e.g., double booking).
+If successful, the lecture is added; otherwise, the client receives an error.
+Remove a Lecture:
+
+Client selects a lecture to remove. Server deletes it from the schedule and informs the client.
+Display Schedule:
+
+Client requests the full schedule for a course, and the server sends the details.
+Other:
+
+If an invalid request is made, the server throws the IncorrectActionException and the client displays the error.
+Assumptions:
+The application only manages schedules for one course and up to five modules.
+The client handles the GUI, while the server handles scheduling logic.
+Submission Format:
+Submit both the client and server applications as zip files named with your student IDs (e.g., 21237333_21222344_Server and 21237333_21222344_Client).
+Zip files should be named 21237333_21222344.zip.
+Assessment Criteria (Marks Breakdown):
+GUI Design: 10%
+Successful Communication between Client and Server: 10%
+Scheduling Clash Handling: 10%
+Add Lecture Handling (with event handling): 10%
+Remove Lecture Handling (with event handling): 20%
+Display Schedule (with event handling): 20%
+Handling IncorrectActionException: 10%
+Code Structure and MVC Implementation: 10%
+Bonus Features: Up to 40%
+Special Notes:
+Starting Point: A basic working example will be provided after the first hard lab.
+Part 2 Details: Will be available in Week 8.
+Important Reminders:
+Plagiarism Policy: Any plagiarism will result in a zero mark and will be reported.
+No late submissions will be accepted for either part.
