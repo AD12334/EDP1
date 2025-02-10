@@ -4,13 +4,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class Server {
-    static HashMap<LocalDate,String> schedule = new HashMap<>();
+    static HashMap<LocalDateTime,String> schedule = new HashMap<>();
         public static void main(String[] args) {
             try (ServerSocket serverSocket = new ServerSocket(1054);
                  Scanner scanner = new Scanner(System.in)) {
@@ -39,41 +39,54 @@ public class Server {
             String date;
             String room;
             String code;
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            LocalDate day;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime start_daytime;
+            LocalDateTime day;
             while ((message = in.readLine()) != null) { // Read messages until client disconnects
 
+                
 
-             if(message.length() > 1){
+
+             if(message.length() > 0){
                 String request = message.substring(0,1);
                 String content = message.substring(1);
     
                 switch(request){
                     case("A"):
-                    //String message = "A" + dateString + "-" + room + "-" + code + "\n";
+                    // String message = "A" + dateString + start + "/"  + end + "/" + room + "/" + code + "\n";
                     String[] info = content.split("/");
                     date = info[0];
-                    room = info[1];
-                    code = info[2];
+                    String start = info[1];
+                    room = info[2];
+                    code = info[3];
     
-                    System.out.println("Request received to schedule a lecture on " + date + "\n" + "In room: " + room + "\n" + "For module: " + code);
+                    System.out.println("Request received to schedule a lecture on " + date + "\n" + "In room: " + room + "\n" + "For module: " + code + "\nTime: " + start);
+                    String day1 = date +  " " + start;//Start day and time
                     
-                    day = LocalDate.parse(date, formatter);
-                    AttemptSchedule(day,room,code);
-                                    break;
-                                    case("R"):
-                                    date = content;
-                                    System.out.println("Request received to remove lecture on " + date);
-                                    day = LocalDate.parse(date, formatter);
-                                    removelecture(day);
-                                    break;
-                                    case("V"):
+                    start_daytime = LocalDateTime.parse(day1, formatter);
+                   
+                    AttemptSchedule(start_daytime,room,code);
+                    break;
+                        case("R"):
+                            String[] inf = content.split("/");
+                            date = inf[0];
+                            System.out.println(date);
+                            String time = inf[1];
+                            System.out.println(time);
+                            System.out.println("Request received to remove lecture on " + date + " " + time);
+                            String target =  date + " " + time;
+                            day = LocalDateTime.parse(target, formatter);
+                            removelecture(day);
+                            break;
+                                case("V"):
                                     System.out.println("Request received to view schedule");
                                     viewSchedule();
                                     break;
-                                    case("O"):
-                                    System.out.println("Request received to show options");
-                                    break;
+                                        case("O"):
+                                            System.out.println("Request received to show options");
+                                            break;
+                            default:
+                                System.out.println(message);
                     
                                 }
                             }
@@ -113,17 +126,23 @@ public class Server {
                             }
                         }
                     
-            public static void AttemptSchedule(LocalDate date,String room, String module){
-            if(schedule.containsKey(date)){
+            public static void AttemptSchedule(LocalDateTime start_daytime,String room, String module){
+                /*We must specify a start and end time for our lectures...
+                 * WHAT IF WE HAVE SCHEDULING CONFLICTS???
+                 * Scheduling conflicts occur if the start or end time of one lecture exists betwen the start and end time of another lecture
+                 * We can use the is before and is after methods
+                 * To check for conflicts
+                 */
+            if(schedule.containsKey(start_daytime)){
             System.out.println("There is already a lecture scheduled for this time and date");
         }else{
             String val = room + "/" + module;
-            schedule.put(date,val);
-            System.out.println("Lecture has been scheduled for " + date);
+            schedule.put(start_daytime,val);
+            System.out.println("Lecture has been scheduled for " + start_daytime);
         }
     }
 
-    public static void removelecture(LocalDate date){
+    public static void removelecture(LocalDateTime date){
         if(schedule.containsKey(date)){
             schedule.remove(date);
             System.out.println("Lecture has been successfully removed from schedule");
@@ -133,5 +152,6 @@ public class Server {
     }
     public static void viewSchedule(){
         System.out.println(schedule);
+        
     }
 }

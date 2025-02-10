@@ -4,7 +4,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 
@@ -35,12 +38,13 @@ public class Client {
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
         while (true) {
 
-            System.out.println("1) Schedule a lecture" +
+            System.out.println("1)Schedule a lecture" +
                     "\n2)Remove a lecture"+
                     "\n3)Display schedule" + "\n4)Others\n");
 
 
             String input = in.readLine();
+            
             switch (input) {
                 case "1":
                 String message = addlecture(); //This is the output we wish to send to our server
@@ -53,48 +57,86 @@ public class Client {
                 case "3":
                 message = viewSchedule();
                 out.println(message);
-                break;
-                case "4":
-                message = Option();
-                out.println(message);
-                break;
-                                               
-            }
-                                               
-                                               
-                                               
-        }
-    }                        
-    void handleMessages(Socket socket, BufferedReader in, Scanner scanner) throws IOException {
+                handleMessages(socket,in);
+                                break;
+                                case "4":
+                                message = Option();
+                                out.println(message);
+                                break;
+                                                               
+                            }
+                                                               
+                                                               
+                                                               
+                        }
+                    }                        
+                    static void handleMessages(Socket socket, BufferedReader in) throws IOException {
         String message;
         while ((message = in.readLine()) != null) { // Read messages until client disconnects
-            LocalDateTime timeReceived = LocalDateTime.now();
-            System.out.println("New message from client received at " + timeReceived);
-            System.out.println("Enter 'Y' to view the message or 'N' to ignore:");                                
-            String response = scanner.nextLine();
-            if (response.equalsIgnoreCase("y")) {
-                System.out.println("Client says: " + message);
-            } else {
-                System.out.println("Message ignored.");
-            }
-            }
-            System.out.println("Client disconnected.");
-            }             
+            
+                System.out.println("Server says: " + message);
+            }     
+        }        
                                                 
 
 
 
 
      public static String addlecture(){
+        LocalDate dateString  = null;
+        LocalDateTime start = null;
+        String room = "",code = "",time = "";
         Scanner sc = new Scanner(System.in);
+        
+        
+        
+        try{
+        while(dateString == null){
         System.out.println("When would you like to schedule a lecture for (dd-MM-YYYY)");
-        String dateString = sc.nextLine();
-        System.out.println("What room would you like to book");
-        String room = sc.nextLine();
-        System.out.println("What is the module code");
-        String code = sc.nextLine();
+        try{
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        
+        LocalDate start_daytime = LocalDate.parse(sc.nextLine(), formatter);
+        dateString = start_daytime;
+        }catch(DateTimeParseException e){
+        System.out.println("Please enter the date in the format (DD-MM-YYYY)");
+        }catch(Exception e){
+            System.out.println("Something went wrong");
+        }
+    }
+    while(start == null){
+    try{
+        
+        System.out.println("What time will the lecture start (HH:mm)");//For sanity all lectures are one hour long
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        time = sc.nextLine();
+        String info  =  dateString + " " + time;
+        System.out.println(info);
+        LocalDateTime start_daytime = LocalDateTime.parse(info, formatter);
+        start = start_daytime;
+        
+        }catch(DateTimeParseException e){
+        System.out.println("Please enter the time in the format HH:mm");
+        }catch(Exception e){
+            System.out.println("Something went wrong");
 
-        String message = "A" + dateString + "/" + room + "/" + code + "\n";
+        }
+    }
+        while(room.equals("")){
+        System.out.println("What room would you like to book");
+        room = sc.nextLine();
+        }
+        while(code.equals("")){
+            System.out.println("What is the module code");
+            code = sc.nextLine();
+        }
+        
+        
+     }catch (Exception e){
+        System.out.println("Something went wrong");
+     }
+        String message = "A" + dateString + "/" + time + "/" + room + "/" + code + "\n";
+        System.out.println(message);
         return message;
         //Im thinking that for adding a lecture we could use A as a flag for add
         //Then the dateString could act as key in our server hashmap
@@ -103,17 +145,21 @@ public class Client {
     }
     public static String removelecture(){
         Scanner sc = new Scanner(System.in);
-        System.out.println("When would you like to remove a lecture (dd-MM-YYYY)");
+        System.out.println("When would you like to remove a lecture (yyyy-MM-dd)");
         String targetDate = sc.nextLine();
-        String message = "R" + targetDate;
+        System.out.println("What time");
+        String time = sc.nextLine();
+        String message = "R" + targetDate + "/" + time + "\n";
         return message;
     }
     public static String viewSchedule(){
-        String message = "V";
+        String message = "V\n";
+        
         return message;  
     }
     public static String Option(){
-        String message = "O";
+        String message = "O\n";
+        
         return message;
     }
 }
