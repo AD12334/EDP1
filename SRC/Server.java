@@ -152,6 +152,6 @@ public class Server {
     }
     public static void viewSchedule(){
         System.out.println(schedule);
-        
+        //TODO............ FIX
     }
 }
