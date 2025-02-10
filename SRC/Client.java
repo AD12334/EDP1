@@ -6,6 +6,15 @@ import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
+
+
+/**
+ * ServerApp:The server application will receive 4  types  of  requests ((1).Add a Lecture,(2).Remove a Lecture,(3).Display Schedule, (4). Others) 
+ * from client and will process those requests. Server  app  will
+ * have a memory‐based data
+ * collection(e.g.,ArrayList,HashMap,etc.) that stores one course(e.g.,LM051-2026)schedule by adding/removing 
+ * lectures for modules based on the requests from client
+ */
 public class Client {
     String host;
     int port;
