@@ -80,7 +80,7 @@ public class Server {
                             break;
                                 case("V"):
                                     System.out.println("Request received to view schedule");
-                                    viewSchedule();
+                                    viewSchedule(socket);
                                     break;
                                         case("O"):
                                             System.out.println("Request received to show options");
@@ -150,8 +150,8 @@ public class Server {
             System.out.println("Schedule does not contain a lecture at the given date and time");
         }
     }
-    public static void viewSchedule(){
-        System.out.println(schedule);
-        //TODO............ FIX
+    public static void viewSchedule(Socket link) throws IOException{
+        PrintWriter out = new PrintWriter(link.getOutputStream(),true);
+        out.println(schedule);
     }
 }
