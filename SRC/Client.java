@@ -35,6 +35,7 @@ public class Client {
     }
     static void Menu(Socket socket) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader serverinput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
         while (true) {
 
@@ -57,12 +58,13 @@ public class Client {
                 case "3":
                 message = viewSchedule();
                 out.println(message);
-                handleMessages(socket,in);
-                                break;
-                                case "4":
-                                message = Option();
-                                out.println(message);
-                                break;
+                handleMessages(socket,serverinput);
+                break;
+                case "4":
+                message = Option();
+                out.println(message);
+                handleMessages(socket,serverinput);
+                break;
                                                                
                             }
                                                                
@@ -73,9 +75,12 @@ public class Client {
                     static void handleMessages(Socket socket, BufferedReader in) throws IOException {
         String message;
         while ((message = in.readLine()) != null) { // Read messages until client disconnects
-            
-                System.out.println("Server says: " + message);
+            if(message.equals("END")){
+            break;
+                
             }     
+            System.out.println(message);
+        }
         }        
                                                 
 

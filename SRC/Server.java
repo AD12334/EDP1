@@ -84,6 +84,15 @@ public class Server {
                                     break;
                                         case("O"):
                                             System.out.println("Request received to show options");
+                                            try {
+                                                throw new IncorrectActionException();
+                                             
+                                             
+                                            } catch (IncorrectActionException e) {
+                                                PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
+                                                out.println(e.getMessage());
+                                                out.println("END");//This is used to stop an infinite while loop in client while the handlemessages method keeps waiting for more input
+                                            }
                                             break;
                             default:
                                 System.out.println(message);
@@ -152,6 +161,12 @@ public class Server {
     }
     public static void viewSchedule(Socket link) throws IOException{
         PrintWriter out = new PrintWriter(link.getOutputStream(),true);
+        if(schedule.isEmpty()){
+        out.println("Schedule is empty\n");
+        out.println("END");
+        }else{
         out.println(schedule);
+        out.println("END");
+        }
     }
 }

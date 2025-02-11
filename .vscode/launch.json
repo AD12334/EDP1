@@ -1,0 +1,47 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Run Main (JavaFX)",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "EDP1_c044877b",
+            "vmArgs": "--module-path \"C:/Users/downe/OneDrive/Desktop/Event driven programming/javafx-sdk-23.0.2/lib\" --add-modules javafx.controls,javafx.fxml"
+        },
+        {
+            "type": "java",
+            "name": "Run Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Run Client",
+            "request": "launch",
+            "mainClass": "Client",
+            "projectName": "EDP1_c044877b"
+        },
+        {
+            "type": "java",
+            "name": "Run Client Test",
+            "request": "launch",
+            "mainClass": "Clienttest",
+            "projectName": "EDP1_c044877b"
+        },
+        {
+            "type": "java",
+            "name": "Run Server",
+            "request": "launch",
+            "mainClass": "Server",
+            "projectName": "EDP1_c044877b"
+        },
+        {
+            "type": "java",
+            "name": "Run Server Test",
+            "request": "launch",
+            "mainClass": "Servertesting",
+            "projectName": "EDP1_c044877b"
+        }
+    ]
+}

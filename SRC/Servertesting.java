@@ -32,6 +32,13 @@ public class Servertesting{
     }
 
 
+        try {
+            throw new IncorrectActionException();
+        }catch(Exception e){
+            
+        }
+
+
 
 
 
